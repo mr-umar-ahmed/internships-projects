@@ -54,7 +54,7 @@ This repository contains both projects, including:
 ### 📢 How to Use
 1. Clone the repository:
    ```sh
- 
+ https://github.com/mr-umar-ahmed/internships-projects.git
    ```
 2. Navigate to the project folder and follow the setup instructions in the individual project README files.
 
