@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Healthcare Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Smart Healthcare Assistant</h1>
+        <h2>Disease Prediction Form</h2>
+        <form method="POST" action="/predict">
+            <label for="age">Age:</label>
+            <input type="text" id="age" name="age" placeholder="Enter your age" required>
+
+            <label for="sex">Sex (1 for Male, 0 for Female):</label>
+            <input type="text" id="sex" name="sex" placeholder="Enter your sex" required>
+
+            <label for="chest_pain">Chest Pain Type (0-3):</label>
+            <input type="text" id="chest_pain" name="chest_pain" placeholder="Enter chest pain type" required>
+
+            <label for="resting_bp">Resting Blood Pressure:</label>
+            <input type="text" id="resting_bp" name="resting_bp" placeholder="Enter resting blood pressure" required>
+
+            <label for="max_heart_rate">Max Heart Rate:</label>
+            <input type="text" id="max_heart_rate" name="max_heart_rate" placeholder="Enter max heart rate" required>
+
+            <button type="submit">Predict</button>
+        </form>
+        <div class="footer">
+            <p>&copy; 2024 Smart Healthcare Assistant</p>
+        </div>
+    </div>
+</body>
+</html>

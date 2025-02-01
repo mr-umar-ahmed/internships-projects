@@ -1,0 +1,63 @@
+from flask import Flask, render_template, request
+import joblib
+import numpy as np
+
+app = Flask(__name__)
+
+# Load pre-trained model and scaler
+heart_disease_model = joblib.load('models/heart_disease_model.pkl')
+scaler = joblib.load('models/scaler.pkl')
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+@app.route('/predict', methods=['POST'])
+def predict():
+    try:
+        # Get the form data from the user
+        age = int(request.form['age'])
+        sex = int(request.form['sex'])
+        cp = int(request.form['cp'])
+        thalach = int(request.form['thalach'])
+        resting_blood_pressure = int(request.form['resting_blood_pressure'])
+        serum_cholesterol = int(request.form['serum_cholesterol'])
+        fasting_blood_sugar = int(request.form['fasting_blood_sugar'])
+        rest_ecg = int(request.form['rest_ecg'])
+        exercise_induced_angina = int(request.form['exercise_induced_angina'])
+        oldpeak = float(request.form['oldpeak'])
+        slope = int(request.form['slope'])
+        vessels = int(request.form['vessels'])
+        thal = int(request.form['thal'])
+
+        # Create the input feature array
+        features = np.array([[age, sex, cp, thalach, resting_blood_pressure, serum_cholesterol, fasting_blood_sugar, rest_ecg,
+                              exercise_induced_angina, oldpeak, slope, vessels, thal]])
+
+        # Scale the features to match the training scale
+        scaled_features = scaler.transform(features)
+
+        # Get the prediction from the model
+        prediction = heart_disease_model.predict(scaled_features)
+
+        # Determine the result
+        if prediction == 1:
+            disease = "Heart Disease"
+            precautions = ["Avoid stress, monitor blood pressure, follow a healthy diet."]
+            workouts = ["Regular aerobic exercises like walking, swimming, cycling."]
+            medications = ["Consult a doctor for appropriate medications, such as Statins."]
+            doctor_advice = "Visit a cardiologist for further evaluation."
+        else:
+            disease = "No Heart Disease"
+            precautions = ["Maintain a healthy lifestyle, stay active, and follow a balanced diet."]
+            workouts = ["Light exercises like walking or yoga to stay active."]
+            medications = ["No medications required at the moment."]
+            doctor_advice = "Continue regular health check-ups with your primary care physician."
+
+        return render_template('result.html', disease=disease, precautions=precautions, workouts=workouts, medications=medications, doctor_advice=doctor_advice)
+
+    except Exception as e:
+        return f"An error occurred: {e}"
+
+if __name__ == "__main__":
+    app.run(debug=True)
